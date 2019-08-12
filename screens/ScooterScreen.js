@@ -13,8 +13,9 @@ import {
 import codigoQR from '../assets/images/codigoQR.png';
 
 
-import IconEntypo from 'react-native-vector-icons/Entypo';
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
+// import IconEntypo from 'react-native-vector-icons/Entypo';
+// import IconAwesome from 'react-native-vector-icons/FontAwesome';
+
 import { TextInput } from 'react-native-gesture-handler';
 
 var colorTextInput = '#000000';
