@@ -2,26 +2,24 @@ import React from 'react';
 
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import Iniciar_Sesion from './cuenta/Iniciar_Sesion';
-import Registrarse from './cuenta/Registrarse';
-//import MainTabNavigator from './navigation/MainTabNavigator';
-import AppNavigator from './navigation/AppNavigator';
-//import CodigoQR from './screens/CodigoQR'; 
-import CodigoQR from './components/CodigoQR';
+import LoginScreen from '../screens/LoginScreen';
+import DrawerNavigation from '../screens/DrawerNavigation';
+import Register from '../screens/Register';
+import CodigoQR from '../components/CodigoQR';
 
 import { StyleSheet, View } from 'react-native';
 
 const RootStack = createStackNavigator(
   {
-    AppNavigator: AppNavigator,
-    //tabNavigator: MainTabNavigator,
-    Iniciar_Sesion: Iniciar_Sesion,
-    Registrarse: Registrarse,
+    LoginScreen: LoginScreen,
+    Register: Register,
+    DrawerNavigation: DrawerNavigation,
     CodigoQR: CodigoQR,
+
 
   },
   {
-    initialRouteName: 'Iniciar_Sesion',
+    initialRouteName: 'LoginScreen',
     
     defaultNavigationOptions: {
       header: null,
@@ -31,7 +29,7 @@ const RootStack = createStackNavigator(
 
 const AppContainer = createAppContainer(RootStack);
 
-export default function Cuenta_nav() {
+export default function Navigation() {
 
   return (
     <View style={styles.container}>
@@ -47,4 +45,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
-

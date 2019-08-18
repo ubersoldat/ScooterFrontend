@@ -6,7 +6,7 @@ import * as Permissions from 'expo-permissions';
 const { width } = Dimensions.get('screen');
 const { width: WIDTH } = Dimensions.get('window');
 
-export default class BarcodeScannerExample extends React.Component {
+export default class CodigoQR extends React.Component {
 
   static navigationOptions = {
     header: null //hide the header bar 
