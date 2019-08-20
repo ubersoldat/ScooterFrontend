@@ -6,6 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import DrawerNavigation from '../screens/DrawerNavigation';
 import Register from '../screens/Register';
 import CodigoQR from '../components/CodigoQR';
+import LoginScreen2 from '../screens/LoginScreen2';
 
 import { StyleSheet, View } from 'react-native';
 
@@ -15,7 +16,7 @@ const RootStack = createStackNavigator(
     Register: Register,
     DrawerNavigation: DrawerNavigation,
     CodigoQR: CodigoQR,
-
+    LoginScreen2: LoginScreen2,
 
   },
   {

@@ -22,16 +22,19 @@ export default class MenuDrawer extends React.Component {
         return (
             <View style={styles.container}>
                 <ScrollView style={styles.scroller}>
-                    <View style={styles.topLink}>
 
-                        <View style={styles.profile}>
-                            <View style={styles.imgView}>
-                                <FontAwesome5 style={styles.img} name={"user"} size={50} color="#ffffff" />
-                            </View>
-                            <View style={styles.profileText}>
+                    <View style={styles.header}>
+
+                        {/* <View style={styles.profile}> */}
+                            {/* <View style={styles.imgView}> */}
+                                <FontAwesome5 style={styles.img} name={"user-circle"} size={70} color="#fff" />
+                                <Text style={styles.text}>Gabriel Uribe</Text>
+                                <Text style={styles.textCorreo}>gabriel.uribe.022@gmail.com</Text>
+                            {/* </View> */}
+                            {/* <View style={styles.profileText}>
                                 <Text style={styles.name}>Gabriel Uribe</Text>
-                            </View>
-                        </View>
+                            </View> */}
+                        {/* </View> */}
                     </View>
 
 
@@ -49,7 +52,7 @@ export default class MenuDrawer extends React.Component {
                                 marginLeft: 5,
                             }}
                         >
-                            <FontAwesome5 name='map-marked-alt' color='#47E245' size={20} style={styles.inputIconStyle} />
+                            <FontAwesome5 name='map-marked-alt' color='#464646' size={20} style={styles.inputIconStyle} />
                         </View>
                         {this.navLink('Home', 'Home')}
                     </View>
@@ -68,7 +71,7 @@ export default class MenuDrawer extends React.Component {
                                 marginLeft: 5,
                             }}
                         >
-                            <Entypo name='wallet' color='#47E245' size={20} style={styles.inputIconStyle} />
+                            <Entypo name='wallet' color='#464646' size={20} style={styles.inputIconStyle} />
                         </View>
                         {this.navLink('Cartera', 'Mi Cartera')}
                         
@@ -88,7 +91,7 @@ export default class MenuDrawer extends React.Component {
                                 marginLeft: 5,
                             }}
                         >
-                            <Ionicons name='md-help' color='#47E245' size={20} style={styles.inputIconStyle} />
+                            <Ionicons name='md-help' color='#464646' size={20} style={styles.inputIconStyle} />
                         </View>
                         {this.navLink('Asistencia', 'Asistencia')}
                     </View>
@@ -107,7 +110,7 @@ export default class MenuDrawer extends React.Component {
                                 marginLeft: 5,
                             }}
                         >
-                            <FontAwesome5 name='user' color='#47E245' size={20} style={styles.inputIconStyle} />
+                            <FontAwesome5 name='user' color='#464646' size={20} style={styles.inputIconStyle} />
                         </View>
                         {this.navLink('Perfil', 'Perfil')}
                     </View>
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     },
     topLink: {
         height: 160,
-        backgroundColor: 'black'
+        backgroundColor: '#FFFFFF'
     },
     bottomHome: {
         flex: 1,
@@ -215,8 +218,10 @@ const styles = StyleSheet.create({
         paddingRight: 20,
     },
     img: {
-        height: 70,
-        width: 70,
+        height: 80,
+        width: 80,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     footer: {
         height: 50,
@@ -237,5 +242,27 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: 20,
         fontSize: 16,
+    },
+    text:{
+        fontSize: 20,
+        fontWeight: 'bold',
+        //marginLeft: 15,
+        color: '#fff',
+        justifyContent: 'center',
+    },
+    textCorreo:{
+        fontSize: 16,
+        fontWeight: 'normal',
+        //marginLeft: 15,
+        color: '#fff',
+        justifyContent: 'center',
+    },
+    header:{
+        width: '100%',
+        height: 200,
+        backgroundColor: '#28883A',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
     }
 })

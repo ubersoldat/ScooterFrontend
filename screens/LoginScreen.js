@@ -17,6 +17,7 @@ import {
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'native-base';
+import { LinearGradient } from 'expo-linear-gradient'; 
 
 export default class LoginScreen extends React.Component {
 
@@ -144,14 +145,14 @@ export default class LoginScreen extends React.Component {
 
 
         return (
-            <View style={{ flex: 1 }}>
 
+            <View style={{ flex: 1 }}>
 
                 <Animated.View
                     style={{
                         position: 'absolute',
                         height: 60, width: 60,
-                        top: 60,
+                        top: 35,
                         left: 25,
                         zIndex: 100,
                         opacity: headerBackArrowOpacity
@@ -179,7 +180,7 @@ export default class LoginScreen extends React.Component {
                         borderRadius: 30
                     }}
                 >
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('DrawerNavigation')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginScreen2')}>
                         <Icon name="md-arrow-forward" style={{ color: 'white' }} />
                     </TouchableOpacity>
 
@@ -187,108 +188,110 @@ export default class LoginScreen extends React.Component {
 
                 </Animated.View>
 
-                <ImageBackground
-                    source={require('../assets/images/fondo.jpg')}
-                    style={{ flex: 1 }}
-                >
-                    <View style={{
-                        flex: 1, justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <Animatable.View
-                            animation="zoomIn" iterationCount={1}
-                            style={{
-                                backgroundColor: 'white',
-                                height: 100, width: 100, alignItems: 'center',
-                                justifyContent: 'center', borderRadius: 50,
-                            }}>
-                            <Text style={{
-                                fontWeight: 'bold',
-                                fontSize: 26
-                            }}>APP</Text>
-                        </Animatable.View>
-                    </View>
+                <LinearGradient colors={['#28983C','#247C34']} style={{ flex: 1 }}>
+                    <ImageBackground
+                        //source={require('../assets/images/fondo.jpg')}
+                        style={{ flex: 1 }}
+                    >
+                        <View style={{
+                            flex: 1, justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Animatable.View
+                                animation="zoomIn" iterationCount={1}
+                                style={{
+                                    backgroundColor: 'white',
+                                    height: 100, width: 100, alignItems: 'center',
+                                    justifyContent: 'center', borderRadius: 50,
+                                }}>
+                                <Text style={{
+                                    fontWeight: 'bold',
+                                    fontSize: 26
+                                }}>APP</Text>
+                            </Animatable.View>
+                        </View>
 
-                    {/** botoom half**/}
+                        {/** botoom half**/}
 
-                    <Animatable.View animation="slideInUp" iterationCount={1}>
-                        <Animated.View
-                            style={{
-                                height: this.loginHeight,
-                                backgroundColor: 'white'
-                            }}>
-
+                        <Animatable.View animation="slideInUp" iterationCount={1}>
                             <Animated.View
                                 style={{
-                                    opacity: headerTextOpacity,
-                                    alignItems: 'flex-start',
-                                    paddingHorizontal: 25,
-                                    marginTop: marginTop
+                                    height: this.loginHeight,
+                                    backgroundColor: '#FFFFFF'
                                 }}>
-                                <Text style={{ fontSize: 24 }}>Comienza la aventura!</Text>
-                            </Animated.View >
 
-                            <TouchableOpacity
-
-                                onPress={() => this.increaseHeightOfLogin()}
-                            >
                                 <Animated.View
                                     style={{
-                                        marginTop: marginTop,
+                                        opacity: headerTextOpacity,
+                                        alignItems: 'flex-start',
                                         paddingHorizontal: 25,
-                                        flexDirection: 'row',
+                                        marginTop: marginTop
                                     }}>
+                                    <Text style={{ fontSize: 24 }}>Comienza la aventura!</Text>
+                                </Animated.View >
 
-                                    <Animated.Text
+                                <TouchableOpacity
+
+                                    onPress={() => this.increaseHeightOfLogin()}
+                                >
+                                    <Animated.View
                                         style={{
-                                            fontSize: 24,
-                                            color: 'gray',
-                                            position: 'absolute',
-                                            bottom: titleTextBottom,
-                                            left: titleTextLeft,
-                                            opacity: titleTextOpacity
-                                        }}
-                                    >
-                                        Ingrese su número de teléfono
+                                            marginTop: marginTop,
+                                            paddingHorizontal: 25,
+                                            flexDirection: 'row',
+                                        }}>
+
+                                        <Animated.Text
+                                            style={{
+                                                fontSize: 24,
+                                                color: 'gray',
+                                                position: 'absolute',
+                                                bottom: titleTextBottom,
+                                                left: titleTextLeft,
+                                                opacity: titleTextOpacity
+                                            }}
+                                        >
+                                            Ingrese su número de teléfono
                                        </Animated.Text>
 
-                                    <Image
-                                        source={require('../assets/images/chile2.png')}
-                                        style={{ height: 24, width: 24, resizeMode: 'contain' }}
-                                    />
-                                    <Animated.View
-                                        pointerEvents="none"
-                                        style={{
-                                            flexDirection: 'row',
-                                            flex: 1,
-                                            borderBottomWidth: this.borderBottomWidth
-                                        }}
-                                    >
+                                        <Image
+                                            source={require('../assets/images/chile2.png')}
+                                            style={{ height: 24, width: 24, resizeMode: 'contain' }}
+                                        />
+                                        <Animated.View
+                                            pointerEvents="none"
+                                            style={{
+                                                flexDirection: 'row',
+                                                flex: 1,
+                                                borderBottomWidth: this.borderBottomWidth
+                                            }}
+                                        >
 
-                                        <Text style={{
-                                            fontSize: 20,
-                                            paddingHorizontal: 10
-                                        }}>
-                                            +56
+                                            <Text style={{
+                                                fontSize: 20,
+                                                paddingHorizontal: 10
+                                            }}>
+                                                +56
                                         </Text>
 
-                                        <TextInput
-                                            keyboardType="numeric"
-                                            maxLength={9}
-                                            ref="textInputMobile"
-                                            style={{ flex: 1, fontSize: 15 }}
-                                            placeholder={this.state.placeholderText}
-                                            underlineColorAndroid="transparent"
-                                        />
+                                            <TextInput
+                                                keyboardType="numeric"
+                                                maxLength={9}
+                                                ref="textInputMobile"
+                                                style={{ flex: 1, fontSize: 15 }}
+                                                placeholder={this.state.placeholderText}
+                                                underlineColorAndroid="transparent"
+                                            />
+
+                                        </Animated.View>
 
                                     </Animated.View>
+                                </TouchableOpacity>
+                                
 
-                                </Animated.View>
-                            </TouchableOpacity>
+                            </Animated.View>
 
-                        </Animated.View>
-
-                        {/* <View style={{
+                            {/* <View style={{
                             height: 70,
                             backgroundColor: 'white',
                             alignItems: 'flex-start',
@@ -307,29 +310,30 @@ export default class LoginScreen extends React.Component {
                         </View> */}
 
 
-                        <View style={{
-                            height: 70,
-                            backgroundColor: 'white',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderTopColor: '#e8e8ec',
-                            borderTopWidth: 1,
-                            paddingHorizontal: 25
-                        }}>
-                            <Text
-                                onPress={() => this.props.navigation.navigate('Register')}
-                                style={{
-                                    color: '#5a7fdf',
-                                    fontWeight: 'bold',
-                                    fontSize: 16,
-                                }}>
-                                Registrate!
+                            <View style={{
+                                height: 70,
+                                backgroundColor: 'white',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderTopColor: '#e8e8ec',
+                                borderTopWidth: 1,
+                                paddingHorizontal: 25
+                            }}>
+                                <Text
+                                    onPress={() => this.props.navigation.navigate('Register')}
+                                    style={{
+                                        color: '#5a7fdf',
+                                        fontWeight: 'bold',
+                                        fontSize: 16,
+                                    }}>
+                                    Registrate!
                             </Text>
-                        </View>
+                            </View>
 
 
-                    </Animatable.View>
-                </ImageBackground>
+                        </Animatable.View>
+                    </ImageBackground>
+                </LinearGradient>
             </View >
         )
     }
