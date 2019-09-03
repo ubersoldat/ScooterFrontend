@@ -2,10 +2,9 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   background: #fff;
-  height: 300px;
+  height: 50%;
   width: 100%;
   position: absolute;
-  bottom: 0;
   shadow-color: #000;
   shadow-offset: 0 0;
   shadow-opacity: 0.2;
@@ -13,7 +12,9 @@ export const Container = styled.View`
   elevation: 3;
   border: 1px solid #ddd;
   align-items: center;
+  margin-top: 50%;
   padding: 20px;
+  
 `;
 
 export const TypeTitle = styled.Text`
@@ -27,21 +28,23 @@ export const TypeDescription = styled.Text`
 `;
 
 export const TypeImage = styled.Image`
-  height: 80px;
+  height: 64px;
+  width: 64px;
   margin: 10px 0;
 `;
 
 export const RequestButton = styled.TouchableOpacity`
-  background: #222;
+  background: #28983C;
   justify-content: center;
   align-items: center;
   height: 44px;
   align-self: stretch;
-  margin-top: 10px;
+  margin-top: 10%;
 `;
 
 export const RequestButtonText = styled.Text`
   color: #fff;
   font-weight: bold;
   font-size: 18px;
+  margin-bottom: 10px;
 `;

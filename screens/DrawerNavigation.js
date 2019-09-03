@@ -9,6 +9,9 @@ import MenuDrawer from '../components/MenuDrawer';
 // proximos
 import MiCartera from './MiCartera';
 // import Historial from './Historial';
+import RecorridoActivos from '../screens/RecorridoActivos';
+
+import CodigoQR from '../components/CodigoQR';
 
 
 const WIDTH = Dimensions.get('window').width;
@@ -33,7 +36,14 @@ const DrawerNavigator = createDrawerNavigator(
         },
         Cartera:{
             screen : MiCartera
+        }, 
+        // CodigoQR:{
+        //     screen : CodigoQR
+        // },
+        RecorridoActivos:{
+            screen : RecorridoActivos
         },
+        
     },
     DrawerConfig
 );

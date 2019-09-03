@@ -6,8 +6,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 export default class AsistenciaScreen extends React.Component {
     render() {
         return (
- 
+
             <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('AsistenciaScreen')}
                 style={{
                     borderWidth: 1,
                     borderColor: 'rgba(0,0,0,0.2)',

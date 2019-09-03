@@ -10,6 +10,7 @@ import {
     ImageBackground,
     Image,
     Animated,
+    ToastAndroid
 } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -23,6 +24,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { KeyboardAvoidingView } from 'react-native';
 
+import API from '../conectionAPI/API';
+
 
 export default class Register extends React.Component {
     constructor() {
@@ -32,9 +35,126 @@ export default class Register extends React.Component {
             placeholderText: 'Ingrese su número de teléfono',
             placeholderTextEmail: 'Ingrese su correo electronico',
             showPass: true,
-            press: false
+            press: false,
+            //Valores iniciales variables registro
+            telefono: '',
+            nombre: '',
+            apellido: '',
+            password: '',
+            email: '',
+            fechaNacimiento: '',
+
+            //Carga de datos de la api
+            url: API.api + '/auth/register',
         }
+
+        // this.handleChangetelefono = this.handleChangetelefono.bind(this);
+        // this.handleChangeNombre = this.handleChangeNombre.bind(this);
+        // this.handleChangeapellido = this.handleChangeapellido.bind(this);
+        // this.handleChangePassword = this.handleChangePassword.bind(this);
+        // this.handleChangeEmail = this.handleChangeEmail.bind(this);
+        // this.handleChangeFechaNacimiento = this.handleChangeFechaNacimiento.bind(this);
+        // // this.handleChangePassword = this.handleChangePassword.bind(this);
     }
+
+    //Acciones encargadas del CRUD
+    handleChangetelefono(newValue) {
+        this.setState({ telefono: newValue })
+    }
+
+    handleChangeNombre(newValue) {
+        this.setState({ nombre: newValue })
+    }
+
+    handleChangeapellido(newValue) {
+        this.setState({ apellido: newValue })
+    }
+
+    handleChangePassword(newValue) {
+        this.setState({ password: newValue })
+    }
+    handleChangeEmail(newValue) {
+        this.setState({ email: newValue })
+    }
+
+    handleChangeFechaNacimiento(newValue) {
+        this.setState({ fechaNacimiento: newValue })
+    }
+
+    //Encargado de enviar los datos de registro a la API
+    registrarBtn = () => {
+        ToastAndroid.show(this.state.url, ToastAndroid.LONG);
+        // if (this.validateEmail()) {
+        // fetch(this.state.url, {
+
+
+        //     method: 'post',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+
+        //         telefono: "12345677",
+        //         nombre: "Nicolas",
+        //         apellido: "Parra",
+        //         password: "copito",
+        //         email: "n.parsdasda@hmialc.sid",
+        //         fechaNacimiento: "10-08-1995"
+
+        //         // email: this.state.email.toString().replace(/ /g, ''),
+        //         // displayName: this.state.name.toString() + ' ' + this.state.lastname.toString(),
+        //         // password: this.state.pass.toString()
+
+        //     })
+        // })
+        //     .then(res => {
+
+        //         if (res.status == 200) {
+        //             ToastAndroid.show('Usuario Registrado', ToastAndroid.LONG);
+        //         } else {
+        //             ToastAndroid.show('ERROR!', ToastAndroid.LONG);
+        //         }
+        //     })
+
+        // } else {
+        //     ToastAndroid.show('Dirección de Correo Electrónico Inválido', ToastAndroid.SHORT);
+        // }
+
+
+        fetch(this.state.url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({
+                telefono: "143230",
+                nombre: "gabrielonga2",
+                apellido: "uribex",
+                password: "copito",
+                email: "sid3",
+                fechaNacimiento: "10-08-1995"
+            }),
+        });
+
+
+
+    }
+
+    // getDatos = () => {
+    //     //this.setState({ loading: true });
+    //     fetch(this.state.url)
+    //         .then(res => res.json())
+    //         .then(res => {
+    //             ToastAndroid.show(res.usuarios, ToastAndroid.LONG);
+    //             console.log(res.usuarios)
+    //             console.log("gg")
+    //         })
+    // }
+
+
+    //-----------------------------------------------------------------
 
     componentWillMount() {
         this.loginHeight = new Animated.Value(155)
@@ -57,6 +177,17 @@ export default class Register extends React.Component {
         }).start()
     }
 
+    //valida la correcta sintaxis para un correo
+    validateEmail() {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+        if (reg.test(this.state.email.toString().replace(/ /g, ''))) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
     render() {
 
         // const headerBackArrowOpacity = this.loginHeight.interpolate({
@@ -68,7 +199,7 @@ export default class Register extends React.Component {
 
             <View style={{ flex: 1 }}>
                 {/* '#39C3CE', '#1C919B' */}
-                <LinearGradient colors={['#28983C','#247C34']} style={{ flex: 1 }}>
+                <LinearGradient colors={['#28983C', '#247C34']} style={{ flex: 1 }}>
                     <Animated.View
                         style={{
                             position: 'absolute',
@@ -152,7 +283,7 @@ export default class Register extends React.Component {
                                                 placeholderTextColor={colorTextInput}
                                                 underlineColorAndroid='transparent'
                                                 autoCorrect={false}
-                                                colorTextInput = {'#464646'}
+                                                colorTextInput={'#464646'}
                                             //secureTextEntry={true}
                                             />
                                             <IconEntypo name='email' color='#464646' size={20} style={styles.inputIconStyle} />
@@ -206,7 +337,11 @@ export default class Register extends React.Component {
 
                                 </Animated.View>
 
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                                <TouchableOpacity onPress={() => {
+                                    this.registrarBtn()
+                                    this.props.navigation.navigate('LoginScreen')
+                                }}
+                                >
 
                                     <View style={{
                                         height: 35,
@@ -272,6 +407,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F2F2F2',
         //color: '#464646',
         marginHorizontal: 25,
+
     },
 
 })

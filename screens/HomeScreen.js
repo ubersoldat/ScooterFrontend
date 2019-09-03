@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-
   StyleSheet,
   View,
   Platform,
@@ -10,27 +9,22 @@ import {
   TouchableOpacity,
   Text,
   StatusBar,
-  TextInput,
 } from 'react-native';
 
 import * as Location from 'expo-location';
 
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import MapView from 'react-native-maps';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { Button } from 'native-base';
 
 const { width, height } = Dimensions.get("window");
 
 const SCREEN_HEIGHT = height;
 const SCREEN_WIDTH = width;
 const ASPECT_RATIO = width / height;
-// const LATITUDE_DELTA = 0.0922;
-// const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 // para acercar el zoom del mapa
 const LATITUDE_DELTA = 0.004757;
@@ -42,35 +36,78 @@ const { width: WIDTH } = Dimensions.get('window');
 var box_count = 3;
 var box_height = height / box_count;
 
-var colorTextInput = '#D9D9D9';
 
 import { LocationButton } from '../components/LocationButton';
 import ScooterLocation from '../components/ScooterLocation';
-// import  {Details}  from '../Details';
 
 import MenuBottom from '../components/MenuBottom';
 import ScannerButtom from '../components/ScannerButtom';
 import AsistenciaButtom from '../components/AsistenciaButtom';
+import Menu from '../Details/Menu';
+// import CodigoQR from '../components/CodigoQR';
+
 
 export default class HomeScreen extends React.Component {
 
-  state = {
-    location: null,
-    errorMessage: null,
-    loading: true,
-    loadingMap: false,
-    positionState: {
-      latitude: 0,
-      longitude: 0,
-      latitudeDelta: 0,
-      longitudeDelta: 0
-    },
+  constructor(props) {
+    super(props);
+    this.state = {
+      //imc: this.props.navigation.state.params.imc ,
+      informacion: null,
+      // informacion: this.props.navigation.state.params.informacion,
+      location: null,
+      errorMessage: null,
+      loading: true,
+      loadingMap: false,
+      // scanner: null,
+      positionState: {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+      },
 
-    markerPosition: {
-      latitude: 0,
-      longitude: 0
+      markerPosition: {
+        latitude: 0,
+        longitude: 0
+      }
+    };
+
+  }
+
+
+
+  // state = {
+  //   location: null,
+  //   errorMessage: null,
+  //   loading: true,
+  //   loadingMap: false,
+  //   positionState: {
+  //     latitude: 0,
+  //     longitude: 0,
+  //     latitudeDelta: 0,
+  //     longitudeDelta: 0
+  //   },
+
+  //   markerPosition: {
+  //     latitude: 0,
+  //     longitude: 0
+  //   }
+  // };
+
+  _getInformacion() {
+
+
+    if (this.props.navigation.state.params) {
+      this.state.informacion = this.props.navigation.state.params.informacion;
+      // scaner = "wena";
+
+    } else {
+      // console.log("se salio");
     }
-  };
+
+  }
+
 
   async componentWillMount() {
     Location.setApiKey('AIzaSyAHSZHScQK-AslKB8QSIyDfqwGc2adFaUM');
@@ -137,11 +174,14 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
+
+      this._getInformacion(),
+
       <View style={styles.container}>
         <View style={styles.box1}>
           <LocationButton cb={() => { this.centerMap() }} />
-          {this.state.loadingMap &&
 
+          {this.state.loadingMap &&
             // esto tambien ve la localizacion de mi, va dentro de mapview
             // showsUserLocation loadingEnabled
 
@@ -160,13 +200,22 @@ export default class HomeScreen extends React.Component {
                   longitudeDelta: 0.05606756756756757,
                 }
               }} />
+
+              {/* {scaner ? (
+                <Menu />
+              ) : (
+                  <Menu />
+                )} */}
+
             </MapView>
+
           }
           {this.state.loading &&
             <View style={styles.loading}>
               <ActivityIndicator size='large' />
-              {/* <Details/> */}
+
             </View>
+
           }
 
           <View style={styles.allNonMapThings}>
@@ -195,6 +244,7 @@ export default class HomeScreen extends React.Component {
               </View>
             </TouchableOpacity>
           </View>
+
         </View>
 
         <View style={styles.box3}>
@@ -219,9 +269,27 @@ export default class HomeScreen extends React.Component {
 
           </TouchableOpacity>
 
-          <AsistenciaButtom />
+          {/* <AsistenciaButtom/> */}
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('AsistenciaScreen')}
+            style={{
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.2)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 50,
+              height: 50,
+              backgroundColor: '#fff',
+              borderRadius: 50,
+              left: 50,
+            }}
+          >
+            <Entypo name={"help"} size={30} color="#000000" />
+          </TouchableOpacity>
 
         </View>
+
+        {/* <Text>{this.state.informacion}!</Text> */}
 
 
       </View>

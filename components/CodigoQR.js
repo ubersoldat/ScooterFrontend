@@ -5,17 +5,37 @@ import * as Permissions from 'expo-permissions';
 
 const { width } = Dimensions.get('screen');
 const { width: WIDTH } = Dimensions.get('window');
+// import HomeScreen from '../Screens/HomeScreen';
+import Menu from '../Details/Menu';
 
 export default class CodigoQR extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      informacion: '',
+      // altura: '',
+      // imc: 0,
+      hasCameraPermission: null,
+      scanned: false,
+    };
+  }
+
+  // calculateImc = () => {
+  //   const { peso, altura } = this.state;
+  //   this.setState({
+  //     imc: (Number(peso) / (Number(altura) * Number(altura))) * 10000
+  //   });
+  // }
 
   static navigationOptions = {
     header: null //hide the header bar 
   };
 
-  state = {
-    hasCameraPermission: null,
-    scanned: false,
-  };
+  // state = {
+  //   hasCameraPermission: null,
+  //   scanned: false,
+  // };
 
   async componentDidMount() {
     this.getPermissionsAsync();
@@ -80,24 +100,28 @@ export default class CodigoQR extends React.Component {
               <View style={{ flex: 1, ...rightBottom }} />
             </View>
           </View>
-        </View>
+        </View> 
 
 
-        {/* <BarCodeScanner
+        {/* <BarCodeScanner 
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
           style={styles.barcodeScanner}
         /> */}
         {scanned && (
-          <Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })} />
+
+          <Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })}
+          onPress={() => this.props.navigation.navigate('Menu', {informacion:this.state.informacion})}/>
         )}
 
-      </View>
+      </View> 
     );
   }
 
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    //const {informacion} = this.state;
+    this.setState({ informacion: data });
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }
 

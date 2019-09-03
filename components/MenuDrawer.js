@@ -7,7 +7,7 @@ const HEIGHT = Dimensions.get('window').height;
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class MenuDrawer extends React.Component {
 
@@ -116,6 +116,25 @@ export default class MenuDrawer extends React.Component {
                         {this.navLink('Perfil', 'Perfil')}
                     </View>
 
+                    <View style={styles.bottomViajesActivos}>
+                        <View
+                            style={{
+                                borderWidth: 1,
+                                borderColor: 'rgba(0,0,0,0.2)',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 35,
+                                height: 35,
+                                backgroundColor: '#fff',
+                                borderRadius: 50,
+                                marginLeft: 5,
+                            }}
+                        >
+                            <MaterialCommunityIcons name='timer' color='#464646' size={20} style={styles.inputIconStyle} />
+                        </View>
+                        {this.navLink('RecorridoActivos', 'RecorridoActivos')}
+                    </View>
+
 
                     <View style={styles.footer}>
                         <Text style={styles.description}>APP</Text>
@@ -127,7 +146,6 @@ export default class MenuDrawer extends React.Component {
         )
     }
 }
-
 
 const styles = StyleSheet.create({
     scroller: {
@@ -184,7 +202,18 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#DEDEDE',
-        paddingBottom: 210,
+        // paddingBottom: 210,
+    },
+    bottomViajesActivos: {
+        flex: 1,
+        backgroundColor: 'white',
+        paddingTop: 5,
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingLeft: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#DEDEDE',
+        paddingBottom: 200,
     },
     link: {
         flex: 1,
