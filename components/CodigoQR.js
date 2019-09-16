@@ -1,32 +1,77 @@
 import React from 'react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { Text, View, StyleSheet, Button, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Button, Dimensions, ToastAndroid } from 'react-native';
 import * as Permissions from 'expo-permissions';
 
 const { width } = Dimensions.get('screen');
 const { width: WIDTH } = Dimensions.get('window');
-// import HomeScreen from '../Screens/HomeScreen';
-import Menu from '../Details/Menu';
+
+import API from '../conectionAPI/API';
 
 export default class CodigoQR extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      informacion: '',
-      // altura: '',
-      // imc: 0,
       hasCameraPermission: null,
       scanned: false,
+      // url api
+      url: API.api + '/public/scooter/',
+      //datos scooter
+      modelo: '',
+      estado: '',
+      latitud: '',
+      longitud: '',
+      IdScooter: '',
     };
   }
 
-  // calculateImc = () => {
-  //   const { peso, altura } = this.state;
-  //   this.setState({
-  //     imc: (Number(peso) / (Number(altura) * Number(altura))) * 10000
-  //   });
-  // }
+
+  validarQR = (data) => {
+
+    if ((data).toString().length == 0) {
+      ToastAndroid.show('Error lectura codigo QR', ToastAndroid.SHORT);
+      this.props.navigation.goBack(null)
+    } else {
+      fetch(this.state.url + data, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          "Content-Type": 'application/json',
+        }
+      })
+        .then(res => {
+
+          if (res.status == 404) {
+            ToastAndroid.show('No se ha encontrado scooter', ToastAndroid.SHORT);
+            this.props.navigation.goBack(null)
+          }
+          if (res.status == 200) {
+
+            res.json().then(datos => {
+
+              this.setState({ estado: datos.estado });
+              this.setState({ modelo: datos.modelo });
+              this.setState({ latitud: datos.latitud });
+              this.setState({ longitud: datos.longitud });
+
+              this.props.navigation.navigate('Menu', {
+                IdScooter: this.state.IdScooter, estado: this.state.estado, modelo: this.state.modelo, latitud: this.state.latitud
+                , longitud: this.state.longitud
+              });
+
+            })
+
+          } if (res.status == 500) {
+            ToastAndroid.show('Error, codigo qr no valido', ToastAndroid.SHORT);
+            this.props.navigation.goBack(null)
+          }
+
+        })
+
+    }
+
+  }
 
   static navigationOptions = {
     header: null //hide the header bar 
@@ -100,28 +145,25 @@ export default class CodigoQR extends React.Component {
               <View style={{ flex: 1, ...rightBottom }} />
             </View>
           </View>
-        </View> 
+        </View>
 
-
-        {/* <BarCodeScanner 
-          onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-          style={styles.barcodeScanner}
-        /> */}
         {scanned && (
 
-          <Button title={'Tap to Scan Again'} onPress={() => this.setState({ scanned: false })}
-          onPress={() => this.props.navigation.navigate('Menu', {informacion:this.state.informacion})}/>
+          console.log("wena wena")
+          
         )}
 
-      </View> 
+      </View>
     );
   }
 
   handleBarCodeScanned = ({ type, data }) => {
-    this.setState({ scanned: true });
-    //const {informacion} = this.state;
-    this.setState({ informacion: data });
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+    this.setState({ IdScooter: data });
+    this.validarQR(data);
+    this.setState({ scanned: false });
+    this.setState({ scanned: null });
+
   };
 }
 
@@ -135,10 +177,8 @@ const styles = StyleSheet.create({
 
   precioStyle: {
     color: '#fff',
-    //width: WIDTH - 50,
     fontSize: 30,
     backgroundColor: '#272727',
-    //marginHorizontal: 25,
     textAlign: 'center',
   },
 

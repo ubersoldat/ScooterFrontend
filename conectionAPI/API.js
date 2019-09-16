@@ -1,5 +1,6 @@
 const apiConnect = {
-    api: 'http://18.234.186.96:3000',
+    // conexion a api (ip y puerto)
+    api: 'http://3.16.165.247:3000',
 }
 
 

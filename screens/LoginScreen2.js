@@ -12,6 +12,8 @@ import {
     Image,
     Animated,
     Keyboard,
+    ToastAndroid,
+    AsyncStorage
 } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -19,17 +21,100 @@ import * as Animatable from 'react-native-animatable';
 import { Icon } from 'native-base';
 import { LinearGradient } from 'expo-linear-gradient';
 import IconEntypo from 'react-native-vector-icons/Entypo';
+import API from '../conectionAPI/API';
+// import AsyncStorage from '@react-native-community/async-storage';
+
+import * as SecureStore from 'expo-secure-store';
+import ReactDOM from 'react-dom';
 
 export default class LoginScreen2 extends React.Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         //increaseHeightOfLogin()
         this.state = {
             placeholderText: 'Ingrese su número de teléfono',
             placeholderContraseña: 'Ingrese su contraseña',
             showPass: true,
-            press: false
+            press: false,
+
+            //Carga de datos de la api
+            url: API.api + '/auth/login',
+            password: '',
+            numero: this.props.navigation.state.params.numero,
+        }
+
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+    }
+
+    handleChangePassword(newValue) { //Cambio estado valor input
+        this.setState({ password: newValue })
+    }
+
+
+    cheqPass = () => {
+
+        if (this.validarRegistro()) {
+
+            fetch(this.state.url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    "Content-Type": 'application/json',
+                },
+                body: JSON.stringify({
+
+                    password: this.state.password.toString(),
+                    telefono: this.state.numero.toString(),
+                })
+            })
+                .then(res => {
+                    if (res.status == 500) {
+                        ToastAndroid.show('Error con el servidor', ToastAndroid.SHORT);
+                    }
+                    if (res.status == 401) {
+                        ToastAndroid.show('Contraseña no corresponde', ToastAndroid.SHORT);
+                    }
+
+                    if (res.status == 200) {
+                        res.json().then(data => {
+                            //guardamos el token en la varible token al momento de logearnos
+                            // AsyncStorage.setItem('token', data.token)
+                            SecureStore.setItemAsync('token', data.token)
+                            ToastAndroid.show('Ingreso Exitoso ', ToastAndroid.SHORT)
+                            this.props.navigation.navigate('DrawerNavigation')
+                        })
+                    }
+                })
+
+
+        } else {
+            ToastAndroid.show('Los campos son obligatorios', ToastAndroid.SHORT);
+        }
+
+    }
+
+    // metodo async para poder mostrar valores de variables
+    mostrarToken = async () => {
+
+        try {
+            // var token = await AsyncStorage.getItem('token')
+            const token = await SecureStore.getItemAsync('token');
+            // console.log("EL TOKEN ES: " + token)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    validarRegistro() {
+
+        let password = this.state.password.toString().length;
+        let telefono = this.state.numero.toString().length;
+
+        if (password == 0 || telefono == 0) {
+            return (false);
+        } else {
+            return (true);
         }
     }
 
@@ -127,12 +212,18 @@ export default class LoginScreen2 extends React.Component {
         }
     }
 
+    componentDidMount() {
+        Animated.timing(this.loginHeight, {
+            toValue: SCREEN_HEIGHT,
+            duration: 500
+        }).start(() => {
+            this.refs.textInputMobile.focus()
+        })
+    }
+
+
     render() {
 
-        const headerTextOpacity = this.loginHeight.interpolate({
-            inputRange: [150, SCREEN_HEIGHT],
-            outputRange: [1, 0]
-        })
         const marginTop = this.loginHeight.interpolate({
             inputRange: [150, SCREEN_HEIGHT],
             outputRange: [25, 100]
@@ -155,9 +246,10 @@ export default class LoginScreen2 extends React.Component {
             outputRange: [0, 1]
         })
 
+        // this.increaseHeightOfLogin();
+
 
         return (
-            this.increaseHeightOfLogin(),
             <View style={{ flex: 1 }}>
 
                 <Animated.View
@@ -193,7 +285,7 @@ export default class LoginScreen2 extends React.Component {
                         borderRadius: 30,
                     }}
                 >
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('DrawerNavigation')}>
+                    <TouchableOpacity onPress={() => { this.cheqPass(), this.mostrarToken() }}>
                         <Icon name="md-arrow-forward" style={{ color: 'white' }} />
                     </TouchableOpacity>
 
@@ -214,8 +306,9 @@ export default class LoginScreen2 extends React.Component {
                                 marginTop: 130
                             }}>
 
-                            <View
+                            <TouchableOpacity
 
+                                onPress={() => this.increaseHeightOfLogin()}
                             >
                                 <Animated.View
 
@@ -271,6 +364,7 @@ export default class LoginScreen2 extends React.Component {
                                             placeholder={this.state.placeholderContraseña}
                                             underlineColorAndroid="transparent"
                                             autoCorrect={false}
+                                            onChangeText={this.handleChangePassword}
                                         />
 
                                     </Animated.View>
@@ -278,7 +372,7 @@ export default class LoginScreen2 extends React.Component {
                                         <IconEntypo name={this.state.press == false ? 'eye' : 'eye-with-line'} color='#464646' size={20} />
                                     </TouchableOpacity>
                                 </Animated.View>
-                            </View>
+                            </TouchableOpacity>
 
                         </Animated.View>
 

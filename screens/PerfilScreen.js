@@ -171,3 +171,16 @@ const styles = StyleSheet.create({
   }
 
 })
+
+
+
+// <View style={styles.itemprofile}>
+//           <FontAwesome5 style={styles.imgitem} name={"user-circle"} size={40} color="#000" />
+//           {/* <Image style={styles.imgitem} source={require("../assets/images/userName50.png")} /> */}
+//           <Text style={styles.labelitem} >
+//             Apellido
+//             </Text>
+//           <Text style={styles.sublabelitem} >
+//             apellidoInput
+//             </Text>
+//         </View>

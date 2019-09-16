@@ -25,6 +25,7 @@ export const TypeTitle = styled.Text`
 export const TypeDescription = styled.Text`
   color: #666;
   font-size: 14px;
+  placeholv
 `;
 
 export const TypeImage = styled.Image`

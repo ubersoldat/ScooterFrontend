@@ -11,7 +11,7 @@ import Menu from '../Details/Menu';
 
 
 // se agrego este dato de prueba
-// import MiCartera from '../Screens/MiCartera';
+import MiCartera from '../screens/MiCartera';
 
 import { StyleSheet, View } from 'react-native';
 

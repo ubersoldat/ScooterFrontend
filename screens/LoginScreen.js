@@ -12,21 +12,62 @@ import {
     Image,
     Animated,
     Keyboard,
+    ToastAndroid
 } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 import * as Animatable from 'react-native-animatable';
 import { Icon } from 'native-base';
-import { LinearGradient } from 'expo-linear-gradient'; 
+import { LinearGradient } from 'expo-linear-gradient';
+import API from '../conectionAPI/API';
+
 
 export default class LoginScreen extends React.Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {
-            placeholderText: 'Ingrese su número de teléfono'
+            placeholderText: 'Ingrese su número de teléfono',
+            //Carga de datos de la api
+            url: API.api + '/public/usuarioFono/',
+            numero: '',
         }
+
+        this.handleChangeNumero = this.handleChangeNumero.bind(this);
+    }
+
+    handleChangeNumero(newValue) { //Cambio estado valor input
+        this.setState({ numero: newValue })
+    }
+
+    cheqNumero = () => {
+        // console.log(this.state.url+(this.state.numero).toString());
+
+        fetch(this.state.url + (this.state.numero).toString(), {
+            method: 'GET',
+        })
+            .then(res => {
+                // console.log(res.status);
+                if (res.status == 200) {
+                    // res.json().then(data => {
+
+                        this.props.navigation.navigate('LoginScreen2', { numero: this.state.numero });
+                    // })
+
+                }
+                if (res.status == 404) {
+                    ToastAndroid.show("Telefono no encontrado ", ToastAndroid.LONG);
+                }
+                if (res.status == 500) {
+                    ToastAndroid.show("Error al conectar al servidor ", ToastAndroid.LONG);
+                }
+
+            })
+            .catch(err => {
+                ToastAndroid.show("Error " + err.toString(), ToastAndroid.LONG);
+            })
+
     }
 
     componentWillMount() {
@@ -115,6 +156,7 @@ export default class LoginScreen extends React.Component {
         }).start()
     }
 
+    
     render() {
 
         const headerTextOpacity = this.loginHeight.interpolate({
@@ -180,7 +222,7 @@ export default class LoginScreen extends React.Component {
                         borderRadius: 30
                     }}
                 >
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginScreen2')}>
+                    <TouchableOpacity onPress={() => { this.cheqNumero() }}>
                         <Icon name="md-arrow-forward" style={{ color: 'white' }} />
                     </TouchableOpacity>
 
@@ -188,7 +230,7 @@ export default class LoginScreen extends React.Component {
 
                 </Animated.View>
 
-                <LinearGradient colors={['#28983C','#247C34']} style={{ flex: 1 }}>
+                <LinearGradient colors={['#28983C', '#247C34']} style={{ flex: 1 }}>
                     <ImageBackground
                         //source={require('../assets/images/fondo.jpg')}
                         style={{ flex: 1 }}
@@ -227,7 +269,7 @@ export default class LoginScreen extends React.Component {
                                         paddingHorizontal: 25,
                                         marginTop: marginTop
                                     }}>
-                                    <Text style={{ fontSize: 24 }}>Comienza la aventura!</Text>
+                                    <Text style={{ fontSize: 24 }}>Iniciar Sesión</Text>
                                 </Animated.View >
 
                                 <TouchableOpacity
@@ -281,13 +323,14 @@ export default class LoginScreen extends React.Component {
                                                 style={{ flex: 1, fontSize: 15 }}
                                                 placeholder={this.state.placeholderText}
                                                 underlineColorAndroid="transparent"
+                                                onChangeText={this.handleChangeNumero}
                                             />
 
                                         </Animated.View>
 
                                     </Animated.View>
                                 </TouchableOpacity>
-                                
+
 
                             </Animated.View>
 

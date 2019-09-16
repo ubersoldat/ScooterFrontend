@@ -132,7 +132,7 @@ export default class MenuDrawer extends React.Component {
                         >
                             <MaterialCommunityIcons name='timer' color='#464646' size={20} style={styles.inputIconStyle} />
                         </View>
-                        {this.navLink('RecorridoActivos', 'RecorridoActivos')}
+                        {this.navLink('RecorridoActivos', 'Recorrido Activo')}
                     </View>
 
 

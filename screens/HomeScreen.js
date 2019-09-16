@@ -52,14 +52,14 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //imc: this.props.navigation.state.params.imc ,
+
       informacion: null,
-      // informacion: this.props.navigation.state.params.informacion,
+
       location: null,
       errorMessage: null,
       loading: true,
       loadingMap: false,
-      // scanner: null,
+
       positionState: {
         latitude: 0,
         longitude: 0,

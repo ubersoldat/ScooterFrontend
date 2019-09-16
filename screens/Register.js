@@ -36,38 +36,24 @@ export default class Register extends React.Component {
             placeholderTextEmail: 'Ingrese su correo electronico',
             showPass: true,
             press: false,
+
             //Valores iniciales variables registro
             telefono: '',
-            nombre: '',
-            apellido: '',
             password: '',
             email: '',
-            fechaNacimiento: '',
 
             //Carga de datos de la api
             url: API.api + '/auth/register',
         }
 
-        // this.handleChangetelefono = this.handleChangetelefono.bind(this);
-        // this.handleChangeNombre = this.handleChangeNombre.bind(this);
-        // this.handleChangeapellido = this.handleChangeapellido.bind(this);
-        // this.handleChangePassword = this.handleChangePassword.bind(this);
-        // this.handleChangeEmail = this.handleChangeEmail.bind(this);
-        // this.handleChangeFechaNacimiento = this.handleChangeFechaNacimiento.bind(this);
-        // // this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleChangeTelefono = this.handleChangeTelefono.bind(this);
+        this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.handleChangeEmail = this.handleChangeEmail.bind(this);
     }
 
     //Acciones encargadas del CRUD
-    handleChangetelefono(newValue) {
+    handleChangeTelefono(newValue) {
         this.setState({ telefono: newValue })
-    }
-
-    handleChangeNombre(newValue) {
-        this.setState({ nombre: newValue })
-    }
-
-    handleChangeapellido(newValue) {
-        this.setState({ apellido: newValue })
     }
 
     handleChangePassword(newValue) {
@@ -75,71 +61,6 @@ export default class Register extends React.Component {
     }
     handleChangeEmail(newValue) {
         this.setState({ email: newValue })
-    }
-
-    handleChangeFechaNacimiento(newValue) {
-        this.setState({ fechaNacimiento: newValue })
-    }
-
-    //Encargado de enviar los datos de registro a la API
-    registrarBtn = () => {
-        ToastAndroid.show(this.state.url, ToastAndroid.LONG);
-        // if (this.validateEmail()) {
-        // fetch(this.state.url, {
-
-
-        //     method: 'post',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-
-        //         telefono: "12345677",
-        //         nombre: "Nicolas",
-        //         apellido: "Parra",
-        //         password: "copito",
-        //         email: "n.parsdasda@hmialc.sid",
-        //         fechaNacimiento: "10-08-1995"
-
-        //         // email: this.state.email.toString().replace(/ /g, ''),
-        //         // displayName: this.state.name.toString() + ' ' + this.state.lastname.toString(),
-        //         // password: this.state.pass.toString()
-
-        //     })
-        // })
-        //     .then(res => {
-
-        //         if (res.status == 200) {
-        //             ToastAndroid.show('Usuario Registrado', ToastAndroid.LONG);
-        //         } else {
-        //             ToastAndroid.show('ERROR!', ToastAndroid.LONG);
-        //         }
-        //     })
-
-        // } else {
-        //     ToastAndroid.show('Dirección de Correo Electrónico Inválido', ToastAndroid.SHORT);
-        // }
-
-
-        fetch(this.state.url, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                "Content-Type": 'application/json',
-            },
-            body: JSON.stringify({
-                telefono: "143230",
-                nombre: "gabrielonga2",
-                apellido: "uribex",
-                password: "copito",
-                email: "sid3",
-                fechaNacimiento: "10-08-1995"
-            }),
-        });
-
-
-
     }
 
     // getDatos = () => {
@@ -155,6 +76,64 @@ export default class Register extends React.Component {
 
 
     //-----------------------------------------------------------------
+
+
+    //Encargado de enviar los datos de registro a la API
+    registrarBtn = () => {
+
+        if (this.validarRegistro()) {
+            if (this.validateEmail()) {
+                fetch(this.state.url, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        "Content-Type": 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: this.state.email.toString().replace(/ /g, ''),
+                        // displayName: this.state.name.toString() + ' ' + this.state.lastname.toString(),
+                        password: this.state.password.toString(),
+                        telefono: this.state.telefono.toString(),
+                    })
+                })
+                    .then(res => {
+                        if (res.status == 500) {
+                            ToastAndroid.show('Error en el registro', ToastAndroid.SHORT);
+                        }
+                        if (res.status == 401) {
+                            ToastAndroid.show('Telefono ya registrado', ToastAndroid.SHORT);
+                        }
+                        if (res.status == 402) {
+                            ToastAndroid.show('Email ya registrado', ToastAndroid.SHORT);
+                        }
+                        if (res.status == 200) {
+                            ToastAndroid.show('Se ha registrado con exito!', ToastAndroid.SHORT);
+                            this.props.navigation.navigate('LoginScreen');
+                        }
+                    })
+
+            } else {
+                ToastAndroid.show('Dirección de Correo Electrónico Inválido', ToastAndroid.SHORT);
+            }
+        }else{
+            ToastAndroid.show('Los campos son obligatorios', ToastAndroid.SHORT);
+        }
+
+
+    }
+    //-----------------------------------------------------------------
+
+    validarRegistro() {
+        let email = this.state.email.toString().length;
+        let pass = this.state.password.toString().length;
+        let phone = this.state.telefono.toString().length;
+
+        if (email == 0 || pass == 0 || phone == 0) {
+            return (false);
+        } else {
+            return (true);
+        }
+    }
 
     componentWillMount() {
         this.loginHeight = new Animated.Value(155)
@@ -200,24 +179,16 @@ export default class Register extends React.Component {
             <View style={{ flex: 1 }}>
                 {/* '#39C3CE', '#1C919B' */}
                 <LinearGradient colors={['#28983C', '#247C34']} style={{ flex: 1 }}>
-                    <Animated.View
-                        style={{
-                            position: 'absolute',
-                            height: 60, width: 60,
-                            top: 35,
-                            left: 25,
-                            zIndex: 100,
-                            //opacity: headerBackArrowOpacity
-                        }}
-                    >
+
+                    <Animated.View style={{ position: 'absolute', height: 60, width: 60, top: 35, left: 25, zIndex: 100}}>
                         <TouchableOpacity
-                            // onPress={() => this.decreaseHeightOfLogin()}
                             onPress={() => this.props.navigation.goBack(null)}
                         >
                             <Icon name="md-arrow-back" style={{ color: 'black' }} />
                         </TouchableOpacity>
 
                     </Animated.View>
+
                     <ImageBackground
                         //source={require('../assets/images/fondo.jpg')}
                         style={{ flex: 1 }}
@@ -284,7 +255,7 @@ export default class Register extends React.Component {
                                                 underlineColorAndroid='transparent'
                                                 autoCorrect={false}
                                                 colorTextInput={'#464646'}
-                                            //secureTextEntry={true}
+                                                onChangeText={this.handleChangeEmail}
                                             />
                                             <IconEntypo name='email' color='#464646' size={20} style={styles.inputIconStyle} />
                                         </View>
@@ -297,6 +268,7 @@ export default class Register extends React.Component {
                                             secureTextEntry={this.state.showPass}
                                             placeholderTextColor={colorTextInput}
                                             underlineColorAndroid='transparent'
+                                            onChangeText={this.handleChangePassword}
                                         />
                                         <IconEntypo name='lock-open' color='#464646' size={20} style={styles.inputIconStyle} />
 
@@ -323,7 +295,7 @@ export default class Register extends React.Component {
                                             color: '#FFFFFF'
                                         }}>
                                             +56
-                                </Text>
+                                        </Text>
                                         <TextInput
                                             keyboardType="numeric"
                                             maxLength={9}
@@ -332,6 +304,7 @@ export default class Register extends React.Component {
                                             placeholder={this.state.placeholderText}
                                             //placeholderTextColor={colorTextInputNumero}
                                             underlineColorAndroid="transparent"
+                                            onChangeText={this.handleChangeTelefono}
                                         />
                                     </Animated.View >
 
@@ -339,7 +312,7 @@ export default class Register extends React.Component {
 
                                 <TouchableOpacity onPress={() => {
                                     this.registrarBtn()
-                                    this.props.navigation.navigate('LoginScreen')
+                                    // this.props.navigation.navigate('LoginScreen')
                                 }}
                                 >
 
