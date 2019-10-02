@@ -219,7 +219,7 @@ export default class HomeScreen extends React.Component {
           }
 
           <View style={styles.allNonMapThings}>
-            <TouchableOpacity style={styles.button} >
+            <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Cartera')}>
               <View style={styles.box4}>
                 <View >
                   <Text style={styles.buttonText} >
@@ -271,7 +271,7 @@ export default class HomeScreen extends React.Component {
 
           {/* <AsistenciaButtom/> */}
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('AsistenciaScreen')}
+            onPress={() => this.props.navigation.navigate('Asistencia')}
             style={{
               borderWidth: 1,
               borderColor: 'rgba(0,0,0,0.2)',
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
   },
 
   box4: {
-    alignItems: 'center',
+    alignItems: 'center', 
     flexDirection: 'row',
     //flex: 1.4,
     // marginBottom: 30,

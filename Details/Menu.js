@@ -209,4 +209,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#A4A4A4',
   },
 
-}) 
+})

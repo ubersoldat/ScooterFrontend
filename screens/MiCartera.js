@@ -7,20 +7,96 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  Image
+  Image,
+  ToastAndroid,
 } from 'react-native';
+
+import API from '../conectionAPI/API';
+import * as SecureStore from 'expo-secure-store';
 
 
 export default class MiCartera extends React.Component {
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     //imc: this.props.navigation.state.params.imc ,
-  //     informacion: this.props.navigation.state.params.informacion,
-  //   };
+  constructor(props) {
+    super(props);
+    this.state = {
 
-  // }
+      // datos de la api
+      url: API.api + '/protected/saldo',
+      token: '',
+      saldo: '',
+    };
+
+  }
+
+  finalizarViaje = () => {
+
+    console.log("el token es: " +this.state.token)
+    // console.log("el IDhistorial es: " + this.state.idHistorial)
+    // // console.log("el fecha es: " +this.state.fecha)
+    // console.log("fecha de finalizar recorrido: " + this.state.fecha)
+
+    fetch(this.state.url, {
+      
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        "Content-Type": 'application/json',
+        "Authorization": 'Bearer ' + this.state.token,
+      },
+    })
+      .then(res => {
+
+        if (res.status == 500) {
+
+          ToastAndroid.show('Error con el servidor', ToastAndroid.SHORT);
+
+
+        }
+        if (res.status == 404) {
+
+          ToastAndroid.show('No se encuentro usuario con esa id', ToastAndroid.SHORT);
+
+        }
+
+        if (res.status == 200) {
+          res.json().then(data => {
+
+            // ToastAndroid.show('Recorrido finalizado! ', ToastAndroid.SHORT)
+            // this.props.navigation.navigate('Home')
+            this.setState({ saldo: data.saldo })
+
+          })
+
+          
+
+
+        }
+      })
+
+  }
+
+  recuperarToken = async () => {
+
+    try {
+      // var token = await AsyncStorage.getItem('token')
+      const token = await SecureStore.getItemAsync('token');
+      console.log("EL TOKEN ES: " + token)
+      this.setState({token:token})
+      
+    } catch (e) {
+      console.log(e)
+    }
+
+    this.finalizarViaje()
+  }
+
+  componentDidMount() {
+
+    this.recuperarToken();
+    
+  }
+
   render() {
     return (
 
@@ -34,7 +110,7 @@ export default class MiCartera extends React.Component {
               <Text style={styles.name}>Saldo virtual</Text>
             </View>
             <View style={styles.contenidoTarjeta}>
-              <Text style={styles.precio}>$15.000</Text>
+              <Text style={styles.precio}>{this.state.saldo}</Text>
             </View>
             <View style={styles.contenidoBoton}>
               <TouchableOpacity style={styles.btnAgregar}>

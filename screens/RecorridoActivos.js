@@ -145,6 +145,7 @@ export default class RecorridoActivos extends React.Component {
                 tiempo: this.state.tiempo,
                 latitud: '144',
                 longitud: '154',
+                
 
             })
         })
@@ -187,10 +188,19 @@ export default class RecorridoActivos extends React.Component {
                     ToastAndroid.show('Recorrido finalizado! ', ToastAndroid.SHORT)
                     this.props.navigation.navigate('Home')
                     // })
+
+                    //this.setState({ estadoUso: null })
+                    this.setState({ minutes_Counter: '00' })
+                    this.setState({ seconds_Counter: '00' })
+                    this.setState({ tiempoMostrar: '' })
+                    this.setState({ costo: '' })
+
                 }
             })
 
     }
+
+    
 
     // // metodos para obtener token y la id del historial
     // _getInformacion() {
